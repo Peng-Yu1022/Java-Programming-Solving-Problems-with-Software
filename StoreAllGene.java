@@ -21,12 +21,12 @@ public class StoreAllGene
         }
         else{
             //System.out.println("start at " + startloc);
-            int stoploc = findStopIndex(dna, startloc+3);
+            int stoploc = findStopIndex(dna, startloc);
             if (stoploc != dna.length()){
                 gene = dna.substring(startloc,stoploc+3);
                 //System.out.println(gene);
                 sr.add(gene);
-                start = stoploc;
+                start = stoploc+3;
             } 
             else{start = startloc + 3;}
             
@@ -36,15 +36,15 @@ public class StoreAllGene
 }
 
     public int findStopIndex(String dna, int index){
-        int stop1 = dna.toLowerCase().indexOf("tag", index);
+        int stop1 = dna.toLowerCase().indexOf("tag", index+3);
         if (stop1 == -1 || (stop1 - index) % 3 != 0){
             stop1 = dna.length();
         }
-        int stop2 = dna.toLowerCase().indexOf("tga", index);
+        int stop2 = dna.toLowerCase().indexOf("tga", index+3);
         if (stop2 == -1 || (stop2 - index) % 3 != 0){
             stop2 = dna.length();
         }
-        int stop3 = dna.toLowerCase().indexOf("taa", index);
+        int stop3 = dna.toLowerCase().indexOf("taa", index+3);
         if (stop3 == -1 || (stop3 - index) % 3 != 0){
             stop3 = dna.length();
         }
@@ -123,16 +123,29 @@ public class StoreAllGene
         return countCTG;
     }
     
+    public void findLengestGene(StorageResource sr){
+        
+        for(String eachGene:sr.data()){
+            if(eachGene.length() > 60){
+                System.out.println(eachGene);
+                System.out.println(eachGene.length());
+                
+            }
+        }
+        
+    }
+    
     public void testFinder(){
-        FileResource fr = new FileResource("brca1line.fa");
+        FileResource fr = new FileResource("GRch38dnapart.fa");
         String strand = fr.asString();
         //String test = "ATGCCATAG";
         //storeAllGene(strand);
-        //System.out.println(storeAllGene(strand).size());
+        System.out.println(storeAllGene(strand).size());
         //cgRatio(strand);
         //System.out.println(cgRatio(strand));
-        //printGene(storeAllGene(strand));
+        printGene(storeAllGene(strand));
         System.out.println(countCTG(strand));
+        //findLengestGene(storeAllGene(strand));
         //if (expected.equals(findAllGene(test))){
         //    System.out.println("succeed!");
         //}
